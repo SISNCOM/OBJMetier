@@ -16,7 +16,7 @@ class Img:
         self.cfg = Cfg
         self.db = Db
         self.path = ""
-        self.verbose = 1
+        self.verbose = 0
 
     def get_by_id(self, id):
         """
