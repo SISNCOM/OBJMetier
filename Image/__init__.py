@@ -1,5 +1,3 @@
-__all__ = ['Database']
-
 from OBJMetier.configuration.Configuration import Configuration
 from OBJSystem.Database.Database import Database
 from OBJMetier.Image.Img import Img
@@ -8,7 +6,8 @@ from OBJMetier.Image.Img import Img
 def main():
     Cfg = Configuration()
     Cfg.path = r"C:\SISNCOM\Config"
-    Cfg.checkFileExistance()
+    if Cfg.checkFileExistance() < 0:
+        print("Reading error")
     Db = Database(Cfg)
     Db.get_connect()
     CopyImg = Img(Cfg, Db)
