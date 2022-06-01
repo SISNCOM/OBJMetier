@@ -5,14 +5,16 @@ from OBJMetier.Image.Img import Img
 
 def main():
     Cfg = Configuration()
-    Cfg.path = r"C:\SISNCOM\Config"
+    Cfg.path = r"C:\SISNCOM\Python\Config"
     if Cfg.checkFileExistance() < 0:
         print("Reading error")
     Db = Database(Cfg)
     Db.get_connect()
-    CopyImg = Img(Cfg, Db)
-    CopyImg.get_by_id(1)
-    CopyImg.copy()
+    img = Img(Cfg, Db)
+    img.info(1)
+    ext = img.get_ext()
+    print(ext)
+    #CopyImg.copy()
 
 
 
