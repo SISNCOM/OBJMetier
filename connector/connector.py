@@ -21,27 +21,53 @@ class connector:
         data = cursor.fetchall()
         # for row in data:
         self.idK = data[0][0]
-        self.exec = data[0][1]
+        s  = data[0][1]
+        i = s.rfind('\\')
+        if(i<0):
+            i = s.rfind('/')
+        if(i>=0):
+            s = s[i+1:]
+        self.exec = s
+
         return self.idK
 
     # mode : 1:copy, 2:MD, 3:stamp
     def checkExec(self, mode):
         path = self.cfg.get_data("PATH", "connector", "")
-        if mode == 1:
-            exec = self.exec
-        elif mode == 2:
-            exec = 'md' + self.exec
+        i = self.exec.rfind('.exe')
+        if(i>0):
+            prg = self.exec[:i+4]
+            cmpl = self.exec[i+5:]
         else:
-            exec = 'img' + self.exec
+            prg = self.exec
+            cmpl = r""
+
+        self.fullPath = path + "\\" + prg
+        if os.path.exists(self.fullPath):
+            if(cmpl==""):
+                if mode == 1:
+                    cmpl = r" -copy "
+                elif mode == 2 :
+                    cmpl = r" -md "
+                else:
+                    cmpl = r" -stamp "
+            self.fullPath += cmpl
+            return True
+
+        if mode == 2:
+            exec = 'md' + prg
+        else:
+            exec = 'img' + prg
 
         self.fullPath = path + "\\" + exec
         if os.path.exists(self.fullPath):
+            self.fullPath += cmpl
             return True
 
         return False
 
-    def exec(self, src, idxImg):
-        tmpPath = self.cfg.get_data("PATH_TMP", "path_tmp", "")
-        cmd = self.fullPath + ' ' + src + ' ' + tmpPath + ' ' + idxImg
+    def execK(self, src, idxImg):
+        tmpPath = self.cfg.get_data("PATH", "path_temp", "")
+        cmd = self.fullPath + ' ' + src + ' ' + tmpPath + ' ' + str(idxImg)
         resu = os.system(cmd)
         return resu
