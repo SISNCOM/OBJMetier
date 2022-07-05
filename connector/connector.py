@@ -4,6 +4,7 @@ import json
 import os
 
 
+# This class is used to execute a program that will create a new image from a source image
 class connector:
 
     def __init__(self, Cfg, Db):
@@ -66,8 +67,12 @@ class connector:
 
         return False
 
-    def execK(self, src, idxImg):
+    def execK(self, src, idxImg, nuStack):
         tmpPath = self.cfg.get_data("PATH", "path_temp", "")
-        cmd = self.fullPath + ' ' + src + ' ' + tmpPath + ' ' + str(idxImg)
-        resu = os.system(cmd)
+        cmd = self.fullPath + ' "' + src + '" "' + tmpPath + '" ' + str(idxImg) + ' '+ str(nuStack)
+        print(cmd)
+        resu = 'x'
+        #resu = os.system(cmd)
+
+
         return resu
